@@ -19,4 +19,4 @@ if __name__ == '__main__':
     #s.close()
     while True:
         time.sleep(2)
-        s.send(bytes([1]))
+        s.send(b"Hello from server")
