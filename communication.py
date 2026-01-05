@@ -35,7 +35,7 @@ class Socket:
             if self.status != 2: # Something else has closed the connection and will handle it
                 break
             data = self.conn.recv(1024)
-            if not data: # We have detected a pipe break
+            if not data: # Pipe break detected
                 logging.info(f"Received empty data on port {self.port} by {self.addr}")
                 self.close() # If the connection is lost, close and retry
                 self.setup()
