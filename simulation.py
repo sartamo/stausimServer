@@ -1,21 +1,21 @@
 import random
 import time
 import logging
+import threading
 import matplotlib.pyplot as plt
 
 class Simulation():
     def __init__(self):
         self.positions = [0, 5, 10]
         self.velocities = [0, 0, 0]
-        self.L = 200
+        self.L = 100
         self.N = 3
         self.vmax = 3
-        self.p = 0.7
-        self.steps = 100
-        self.interval = 0.5
+        self.p = 0.5
+        self.steps = 25
         self.history = []
 
-    def _simulation(self):
+    def _run(self):
         for t in range(self.steps):
             new_velocities = self.velocities[:]
 
@@ -46,14 +46,21 @@ class Simulation():
             self.velocities = new_velocities
             self.history.append(self.positions[:])
             logging.info(f"Simulation: positions {self.positions}, velocities {self.velocities}")
-            #time.sleep(interval)
+            time.sleep(0.1)
+    
+    def start(self):
+        t = threading.Thread(target=self._run)
+        t.start()
+        return t
+
 
 if __name__ == '__main__':
     format = "%(asctime)s: %(message)s"
     logging.basicConfig(format=format, level=logging.INFO, datefmt="%H:%M:%S")
 
     simulation = Simulation()
-    simulation._simulation()
+    t = simulation.start()
+    t.join()
 
     plt.figure(figsize=(20, 10))
     colors = ["red", "blue", "green"]
@@ -64,7 +71,7 @@ if __name__ == '__main__':
 
     plt.xlabel("Position")
     plt.ylabel("Time step")
-    plt.title("Nagel–Schreckenberg Simulation (3 Cars)")
+    plt.title("Nagel–Schreckenberg-Simulation")
     plt.gca().invert_yaxis()
     plt.legend()
     plt.show()

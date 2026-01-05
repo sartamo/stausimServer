@@ -27,13 +27,11 @@ class Socket:
         logging.info(f"Connected on port {self.port} by {self.addr}")
         s = threading.Thread(target=self._send)
         s.start()
-        r = threading.Thread(target=self._receive)
-        r.start()
+        #r = threading.Thread(target=self._receive)
+        #r.start()
     
     def _receive(self):
-        while True:
-            if self.status != 2: # Something else has closed the connection and will handle it
-                break
+        while self.status == 2: # status != 2: Something else has closed the connection and will handle it
             data = self.conn.recv(1024)
             if not data: # Pipe break detected
                 logging.info(f"Received empty data on port {self.port} by {self.addr}")
@@ -44,9 +42,7 @@ class Socket:
             logging.info(f"Received {data} from {self.addr} on port {self.port}")
     
     def _send(self):
-        while True:
-            if self.status != 2: # Something else has closed the connection and will handle it
-                break
+        while self.status == 2: # status != 2: Something else has closed the connection and will handle it
             if self.sendBuffer:
                 try:
                     self.conn.sendall(self.sendBuffer[0])
@@ -60,8 +56,9 @@ class Socket:
             time.sleep(0.05)
     
     def setup(self):
-        x = threading.Thread(target=self._setup)
-        x.start()
+        t = threading.Thread(target=self._setup)
+        t.start()
+        return t
     
     def receive(self):
         if self.receiveBuffer:
