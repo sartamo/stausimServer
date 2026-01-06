@@ -30,17 +30,22 @@ if __name__ == '__main__':
     t1.join()
     t2.join()
 
-    sim = simulation.Simulation()
+    '''sim = simulation.Simulation()
     ts = sim.start()
 
     while ts.is_alive():
-        v0 = sim.velocities[0] / 4
-        s0.send(pickle.dumps((0, v0)))
-        v1 = sim.velocities[1] / 4
-        s1.send(pickle.dumps((0, v1)))
-        v2 = sim.velocities[2] / 4
-        s2.send(pickle.dumps((0, v2)))
+        v0 = speeds[sim.velocities[0]]
+        s0.send(pickle.dumps((0, sim.velocities[0])))
+        v1 = speeds[sim.velocities[1]]
+        s1.send(pickle.dumps((0, sim.velocities[1])))
+        v2 = speeds[sim.velocities[2]]
+        s2.send(pickle.dumps((0, sim.velocities[2])))
     
     s0.status = 0
     s1.status = 0
-    s2.status = 0
+    s2.status = 0'''
+
+    while True:
+        s2.send(pickle.dumps((0, 3))) # speed 1 -> 0.6 speed 2 -> 0.75 speed 3 -> 1 ???
+        s0.send(pickle.dumps((0, 3)))
+        s1.send(pickle.dumps((0, 3)))

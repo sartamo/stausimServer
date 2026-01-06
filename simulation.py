@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 
 class Simulation():
     def __init__(self):
-        self.positions = [0, 5, 10]
+        self.positions = [0, 3, 6]
         self.velocities = [0, 0, 0]
         self.L = 100
         self.N = 3
